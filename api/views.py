@@ -3,12 +3,16 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from company.models import Company, Employee, Role
 from .serializers import CompanySerializer,EmployeeSerializer,RoleSerializer,RoleListSerializer
+import logging
+
+logger = logging.getLogger(__name__)
 
 @api_view(["GET"])
 def getCompanies(request):
-    companies = Company.objects.all()
-    serializer = CompanySerializer(companies,many=True)
-    return Response(serializer.data)
+  logger.info(f"Path: {request.path}, Method: {request.method}, IP: {request.META['REMOTE_ADDR']},Headers: {request.headers}")
+  companies = Company.objects.all()
+  serializer = CompanySerializer(companies,many=True)
+  return Response(serializer.data)
 
 @api_view(["POST"])
 def addCompany(request):
@@ -133,7 +137,74 @@ def deleteEmployee(request):
     return Response({"status":204,"message":"employee deleted","id":data['id']},status=status.HTTP_204_NO_CONTENT)
   except Employee.DoesNotExist:
     return Response({"status":404,"message":"employee not found"},status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET'])
+def searchEmployee(request):
+  results = []
+  resultsKeys=[]
+  data = request.data
+  if type(data) is not dict:
+     return Response({"status":400,"message":"request should be json","data":results},status=status.HTTP_400_BAD_REQUEST)
   
+  roleFilters = {}
+  companyFilters = {}
+  employeeFilters = {}
+  
+  if 'employer' in data.keys():
+    companyFilters['name__contains']=data['employer']
+  
+  if 'name' in data.keys():
+    employeeFilters['name__contains']=data['name']
+
+  if 'company' in data.keys():
+    employeeFilters['company__contains']=data['employer']
+
+  if 'department' in data.keys():
+    employeeFilters['department__contains']=data['department']
+  
+  if 'position' in data.keys():
+    roleFilters['role__contains']=data['position']
+
+  if 'year_started' in data.keys():
+    roleFilters['start_date__year']=data['year_started']
+
+  if 'year_left' in data.keys():
+    roleFilters['end_date__year']=data['year_left']
+  
+  if len(companyFilters.keys())>0:
+    companies = Company.objects.filter(**companyFilters)
+    company_ids = companies.values_list('id', flat=True)
+    employee_filters = {
+      'company_id__in': company_ids 
+    }
+    employees = Employee.objects.filter(**employee_filters)
+    for employee in employees:
+      if employee.pk not in resultsKeys:
+        resultsKeys.append(employee.pk)
+        results.append(employee)
+
+  if len(employeeFilters.keys())>0:
+    employees = Employee.objects.filter(**employeeFilters)
+    for employee in employees:
+      if employee.pk not in resultsKeys:
+        resultsKeys.append(employee.pk)
+        results.append(employee)
+    
+  if len(roleFilters.keys())>0:
+    roles = Role.objects.filter(**roleFilters).select_related('employee')
+    for role in roles:
+      employee = role.employee
+      if employee.pk not in resultsKeys:
+        resultsKeys.append(employee.pk)
+        results.append(employee)
+    
+  if len(results)>0:
+    serializer = EmployeeSerializer(results,many=True)
+    return Response({"status":200,"message":"employees","data":serializer.data},status=status.HTTP_200_OK)
+  else:
+    return Response({"status":204,"message":"Employee not found","data":{}},status=status.HTTP_204_NO_CONTENT)   
+
 @api_view(["GET"])
 def getRoles(request):
     roles = Role.objects.all()

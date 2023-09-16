@@ -1,0 +1,8 @@
+<h2>Create Company</h2>
+<form (ngSubmit)="onSubmit(companyForm)" #companyForm="ngForm">
+  <div>
+    <label for="name">Company Name:</label>
+    <input type="text" id="name" name="name" [(ngModel)]="company.name" required>
+  </div>
+  <button type="submit">Create</button>
+</form>

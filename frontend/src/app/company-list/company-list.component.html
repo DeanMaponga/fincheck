@@ -1,0 +1,9 @@
+<h2>Company List</h2>
+<div>
+  <input type="text" [(ngModel)]="searchTerm" placeholder="Search by name">
+</div>
+<ul>
+  <li *ngFor="let company of filteredCompanies()">
+    <a [routerLink]="['/companies', company.id, 'employees']">{{ company.name }}</a>
+  </li>
+</ul>

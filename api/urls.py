@@ -15,6 +15,7 @@ urlpatterns=[
     path('updateEmployee/',views.updateEmployee),
     path('bulkUpdateEmployees/',views.bulkUpdateEmployees),
     path('deleteEmployee/',views.deleteEmployee),
+    path('searchEmployee/',views.searchEmployee),
 
     path('getRoles/',views.getRoles),
     path('addRole/',views.addRole),

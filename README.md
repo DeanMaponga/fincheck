@@ -48,3 +48,7 @@ pip install djangorestframework
 
 #Creating interfaces
 #Create react interface
+
+#Handle CORS
+pip install django-cors-headers
+#add  'corsheaders', to INSTALLED_APPS in settings.py
