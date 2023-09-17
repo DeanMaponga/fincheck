@@ -1,4 +1,17 @@
-<h1>Company List</h1>
-<ul>
-  <li *ngFor="let company of companies">{{ company.name }}</li>
-</ul>
+<nav class="navbar">
+  <div class="navbar-brand">Company List</div>
+  <button class="btn btn-primary" (click)="openCompanyForm()">New Company</button>
+</nav>
+<div class="company-list">
+  <div class="company-card" *ngFor="let company of companies">
+    <h2>{{ company.name }}</h2>
+    <p>Date of Registration: {{ company.date_of_registration }}</p>
+    <p>Registration Number: {{ company.registration_number }}</p>
+    <p>Address: {{ company.address }}</p>
+    <p>Contact Person: {{ company.contact_person }}</p>
+    <p>Departments: {{ company.departments }}</p>
+    <p>Number of Employees: {{ company.number_of_employees }}</p>
+    <p>Contact Phone: {{ company.contact_phone }}</p>
+    <p>Email: {{ company.email }}</p>
+  </div>
+</div>

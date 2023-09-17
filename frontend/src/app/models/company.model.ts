@@ -9,5 +9,4 @@ export interface Company {
     number_of_employees: number;
     contact_phone: string;
     email: string;
-    // Add other properties as needed
 }

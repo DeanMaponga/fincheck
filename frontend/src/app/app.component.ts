@@ -28,4 +28,9 @@ export class AppComponent {
       }
     );
   }
+
+  openCompanyForm() {
+    // Implement the logic to open the company form
+    console.log('Opening company form...');
+  }
 }
