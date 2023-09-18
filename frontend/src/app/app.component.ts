@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Company } from './models/company.model';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -8,29 +8,13 @@ import { Company } from './models/company.model';
 })
 export class AppComponent {
   title = 'frontend';
-  companies: Company[] = [];
-  constructor(private http: HttpClient) {}
+  currentPage: string = 'add-company';
+  constructor(private router: Router) {}
   
-  ngOnInit() {
-    this.fetchCompanies();
-  }
-  
-  fetchCompanies() {
+  ngOnInit() {}
 
-    this.http.get<Company[]>('http://localhost:8000/getCompanies/?format=json')
-    .subscribe(
-      (data) => {
-        this.companies = data;
-        console.log(this.companies[0].name);
-      },
-      (error) => {
-        console.error('Error fetching companies:', error);
-      }
-    );
-  }
-
-  openCompanyForm() {
-    // Implement the logic to open the company form
-    console.log('Opening company form...');
+  changePage(page: string) {
+    this.currentPage = page;
+    this.router.navigate([`/${page}`]);
   }
 }

@@ -1,0 +1,18 @@
+<mat-card [routerLink]="['/company', company?.id]" (click)="navigateToCompany()">
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon >business</mat-icon>
+  </div>      
+    <mat-card-title>{{ company?.name }}</mat-card-title>
+    <mat-card-subtitle>{{ company?.date_of_registration }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <p><strong>Registration Number:</strong> {{ company?.registration_number }}</p>
+    <p><strong>Address:</strong> {{ company?.address }}</p>
+    <p><strong>Contact Person:</strong> {{ company?.contact_person }}</p>
+    <p><strong>Departments:</strong> {{ company?.departments }}</p>
+    <p><strong>Number of Employees:</strong> {{ company?.number_of_employees }}</p>
+    <p><strong>Contact Phone:</strong> {{ company?.contact_phone }}</p>
+    <p><strong>Email:</strong> {{ company?.email }}</p>
+  </mat-card-content>
+</mat-card>

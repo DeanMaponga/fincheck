@@ -1,4 +1,31 @@
-<nav class="navbar">
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav mode="side" opened class="sidenav">
+    <div class="logo-container">
+      <h1 class="logo-text">Talent Verify</h1>
+    </div>
+    <button mat-raised-button color="primary" [ngClass]="{'selected': currentPage === 'add-company'}" (click)="changePage('add-company')">Add Company</button>
+    <button mat-raised-button color="primary" [ngClass]="{'selected': currentPage === 'companies'}" (click)="changePage('companies')">View Companies</button>
+    <button mat-raised-button color="primary" [ngClass]="{'selected': currentPage === 'employees'}" (click)="changePage('employees')">View Employees</button>
+  </mat-sidenav>
+  <mat-sidenav-content class="sidenav-content">
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+<!--<mat-tab-group>
+  <mat-tab label="All Companies">
+    <app-company-list></app-company-list>
+  </mat-tab>
+  <mat-tab label="All Employees">
+    <app-employee-list></app-employee-list>
+  </mat-tab>
+  <mat-tab label="Add Company">
+    <app-company-form></app-company-form>
+  </mat-tab>
+</mat-tab-group>-->
+
+
+<!--<nav class="navbar">
   <div class="navbar-brand">Company List</div>
   <button class="btn btn-primary" (click)="openCompanyForm()">New Company</button>
 </nav>
@@ -14,4 +41,4 @@
     <p>Contact Phone: {{ company.contact_phone }}</p>
     <p>Email: {{ company.email }}</p>
   </div>
-</div>
+</div>-->

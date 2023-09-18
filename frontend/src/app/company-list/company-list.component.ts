@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Company } from '../models/company.model';
+import { APIService } from '../services/api.service';
 
 @Component({
   selector: 'app-company-list',
@@ -6,22 +8,33 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./company-list.component.scss']
 })
 export class CompanyListComponent implements OnInit {
-
-  constructor() { }
+  isLoading = true;
+  searchQuery = '';
+  companies:Company[] =[];
+  constructor(private apiService: APIService) {}
 
   ngOnInit(): void {
+    this.apiService.getCompanies()
+    .then((results) => {
+      this.isLoading = false;
+      this.companies = results.data;
+    })
+    .catch((error) => {
+        console.error('Error fetching companies:', error);
+      }
+    );
   }
-
-
-  companies = [
-    { id: 1, name: 'Company 1', employees: ['Employee 1', 'Employee 2'] },
-    { id: 2, name: 'Company 2', employees: ['Employee 3', 'Employee 4'] }
-  ];
-  searchTerm = '';
-
-  filteredCompanies() {
-    return this.companies.filter(company =>
-      company.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+  
+  searchCompanies() {
+    this.isLoading = true;
+    this.apiService.searchCompany({"name":this.searchQuery})
+    .then((results) => {
+      this.isLoading = false;
+      this.companies = results.data;
+    })
+    .catch((error) => {
+        console.error('Error fetching companies:', error);
+      }
     );
   }
 }

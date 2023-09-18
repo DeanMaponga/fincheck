@@ -1,0 +1,10 @@
+<mat-card>
+    <mat-card-header>
+      <mat-card-title>{{ employee?.name }}</mat-card-title>
+      <mat-card-subtitle>Employee ID: {{ employee?.employee_id }}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>Company: {{ employee?.company?.name }}</p>
+      <p>Department: {{ employee?.department }}</p>
+    </mat-card-content>
+  </mat-card>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Company } from '../models/company.model';
 
 @Component({
   selector: 'app-company-form',
@@ -7,21 +8,43 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./company-form.component.scss']
 })
 export class CompanyFormComponent implements OnInit {
+  isDetails = true;
+  isLoading = false;
+  isSuccess = false;
+  companyForm: FormGroup = new FormGroup({});
 
-  constructor() { }
+  constructor(private formBuilder: FormBuilder) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this.companyForm = this.formBuilder.group({
+      id: [null],
+      name: ['', Validators.required],
+      date_of_registration: ['', Validators.required],
+      registration_number: ['', Validators.required],
+      address: ['', Validators.required],
+      contact_person: ['', Validators.required],
+      departments: ['', Validators.required],
+      number_of_employees: ['', Validators.required],
+      contact_phone: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]]
+    });
   }
 
-  company = {
-    name: '',
-    employees: []
-  };
-
-  onSubmit(form: NgForm) {
-    // Here, you can handle the form submission and add the company to the list of companies
-    console.log(this.company);
-    form.reset();
+  onSubmit() {
+    if (this.companyForm.valid) {
+      const companyData: Company = this.companyForm.value;
+      this.isDetails = false;
+      this.isLoading = true;
+      this.isSuccess =  false;
+      // Do something with the submitted form data
+      console.log(companyData);
+    }
   }
 
+  onOKButtonClicked() {
+    this.isDetails = true;
+    this.isLoading = false;
+    this.isSuccess = false;
+    this.companyForm.reset();
+  }
 }
