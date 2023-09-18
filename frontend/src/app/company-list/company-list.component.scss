@@ -22,8 +22,20 @@ mat-form-field {
     text-align: center;
   }
 
-
-
+  .example-spacer {
+    flex: 1 1 auto;
+}
+.button-container.mat-button-spacing-medium {
+    margin-bottom: 16px; 
+}
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .spacer {
+    margin-right: 24px;
+  }
   mat-list-item {
     min-height: 400px; 
   }

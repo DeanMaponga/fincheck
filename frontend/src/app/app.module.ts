@@ -29,11 +29,14 @@ import { EmployeeCardComponent } from './employee-card/employee-card.component';
 import { CompanyDetailsComponent } from './company-details/company-details.component';
 import { EmployeeSearchComponent } from './employee-search/employee-search.component';
 import { EmployeeFormComponent } from './employee-form/employee-form.component';
+import { EmployeeFileComponent } from './employee-file/employee-file.component';
+import { CompanyFileComponent } from './company-file/company-file.component';
 
 const routes: Routes = [
   { path: 'companies', component: CompanyListComponent },
   { path: 'employees', component: EmployeeSearchComponent },
   { path: 'add-company', component: CompanyFormComponent },
+  { path: 'add-company-file', component:CompanyFileComponent},
   { path: 'company/:id', component: CompanyDetailsComponent },
   { path: 'company/:id/newEmployee', component: EmployeeFormComponent },
   { path: '', redirectTo: '/add-company', pathMatch: 'full' }
@@ -49,7 +52,9 @@ const routes: Routes = [
     EmployeeCardComponent,
     CompanyDetailsComponent,
     EmployeeSearchComponent,
-    EmployeeFormComponent
+    EmployeeFormComponent,
+    EmployeeFileComponent,
+    CompanyFileComponent
   ],
   imports: [
     BrowserModule,

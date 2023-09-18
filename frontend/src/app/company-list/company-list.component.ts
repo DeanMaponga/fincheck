@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Company } from '../models/company.model';
+import { Router } from '@angular/router';
 import { APIService } from '../services/api.service';
 
 @Component({
@@ -11,7 +12,7 @@ export class CompanyListComponent implements OnInit {
   isLoading = true;
   searchQuery = '';
   companies:Company[] =[];
-  constructor(private apiService: APIService) {}
+  constructor(private router: Router,private apiService: APIService) {}
 
   ngOnInit(): void {
     this.apiService.getCompanies()
@@ -36,5 +37,13 @@ export class CompanyListComponent implements OnInit {
         console.error('Error fetching companies:', error);
       }
     );
+  }
+
+  addCompany(){
+    this.apiService.currentTab = 'add-company';
+    this.router.navigate([`/add-company`]);
+  }
+  addCompaniesWithCSV(){
+    this.router.navigate([`/add-company-file`]);
   }
 }

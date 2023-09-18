@@ -1,0 +1,20 @@
+<h2 class="header">Add companies using text,csv or excel file</h2>
+<div class="button-container mat-button-spacing-medium">
+    <div class="spacer"></div>
+    <button mat-raised-button color="primary">
+        <mat-icon>attach_file</mat-icon>
+        <input type="file" (change)="onFileSelected($event)" accept=".csv, application/vnd.ms-excel, text/plain" style="display:none">
+        Choose File
+    </button>
+    <div class="spacer"></div>
+    <button mat-raised-button color="primary" (click)="onSubmit()">Submit</button>
+</div>
+<div>
+    <button mat-raised-button color="primary" (click)="openFile()">
+      <mat-icon>attach_file</mat-icon>
+      Choose File
+    </button>
+    <input type="file" style="display: none" #fileInput (change)="handleFileInput(fileInput)">
+  </div>
+  ```
+

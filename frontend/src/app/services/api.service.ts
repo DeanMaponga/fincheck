@@ -8,6 +8,7 @@ import { Employee } from '../models/employee.model';
   providedIn: 'root'
 })
 export class APIService {
+  currentTab: string = 'add-company';
   private apiUrl = 'http://localhost:8000/'; 
 
   constructor(private http: HttpClient) { }
@@ -17,9 +18,9 @@ export class APIService {
     return this.http.get(url).toPromise();
   }
 
-  addCompany(company:Company):Promise<any>{
-    const url = `${this.apiUrl}addCompany`; 
-    return this.http.post(url, company).toPromise();
+  addCompany(data:any):Promise<any>{
+    const url = `${this.apiUrl}addCompany/`; 
+    return this.http.post(url,data).toPromise();
   }
   
   searchCompany(data:any):Promise<any>{
@@ -47,4 +48,8 @@ export class APIService {
     return this.http.post(url,data).toPromise();
   }
 
+  testAPI(data:any):Promise<any>{
+    const url = `${this.apiUrl}testAPI/`; 
+    return this.http.post(url,data).toPromise();
+  }
 }

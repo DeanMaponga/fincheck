@@ -1,5 +1,5 @@
 export interface Company {
-    id: number;
+    id: number|null;
     name: string;
     date_of_registration:string;
     registration_number: string;
