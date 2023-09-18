@@ -2,24 +2,45 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from company.models import Company, Employee, Role
-from .serializers import CompanySerializer,EmployeeSerializer,RoleSerializer,RoleListSerializer
+from .serializers import CompanySerializer,EmployeeSerializer,RoleSerializer,ErrorSerializer
 import logging
 
 logger = logging.getLogger(__name__)
+
+@api_view(["POST"])
+def testAPI(request):
+  data = request.data
+  print(data)
+  try:
+    serializer =CompanySerializer(data=data)
+    if serializer.is_valid(raise_exception=True):
+      serializer.save()
+      return Response(status=status.HTTP_200_OK,data=serializer.data)
+  except Exception as err:
+    err_serializer = ErrorSerializer({"details":err})
+    return Response(status=status.HTTP_400_BAD_REQUEST,exception=err,data=err_serializer.data)
+  return Response(status=status.HTTP_400_BAD_REQUEST,data=data)
 
 @api_view(["GET"])
 def getCompanies(request):
   logger.info(f"Path: {request.path}, Method: {request.method}, IP: {request.META['REMOTE_ADDR']},Headers: {request.headers}")
   companies = Company.objects.all()
   serializer = CompanySerializer(companies,many=True)
-  return Response(serializer.data)
+  return Response({"status":200,"message":"companies","data":serializer.data},status=status.HTTP_200_OK)
 
 @api_view(["POST"])
 def addCompany(request):
-    serializer =CompanySerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-    return Response({"status":200,"message":"company added","data":serializer.data},status=status.HTTP_200_OK)
+  data = request.data
+  print(data)
+  try:
+    serializer =CompanySerializer(data=data)
+    if serializer.is_valid(raise_exception=True):
+      serializer.save()
+      return Response(status=status.HTTP_200_OK,data=serializer.data)
+  except Exception as err:
+    err_serializer = ErrorSerializer({"details":err})
+    return Response(status=status.HTTP_400_BAD_REQUEST,exception=err,data=err_serializer.data)
+  return Response(status=status.HTTP_400_BAD_REQUEST,data=data)
 
 @api_view(["POST"])
 def addCompanies(request):
@@ -73,11 +94,29 @@ def deleteCompany(request):
   except Employee.DoesNotExist:
     return Response({"status":404,"message":"company not found"},status=status.HTTP_404_NOT_FOUND)
 
+@api_view(["POST"])
+def searchCompany(request):
+  companies = []
+  data = request.data
+  if type(data) is not dict:
+    return Response({"status":400,"message":"request should be json","data":companies},status=status.HTTP_400_BAD_REQUEST)
+  
+  companyFilters = {}
+  if 'id' in data.keys():
+    companyFilters['id']=data['id']
+  
+  if 'name' in data.keys():
+    companyFilters['name__contains']=data['name']
+
+  companies = Company.objects.filter(**companyFilters) 
+  serializer = CompanySerializer(companies,many=True)
+  return Response({"status":200,"message":"companies","data":serializer.data},status=status.HTTP_200_OK)
+
 @api_view(["GET"])
 def getEmployees(request):
     employees = Employee.objects.all()
     serializer = EmployeeSerializer(employees,many=True)
-    return Response(serializer.data)
+    return Response({"status":200,"message":"employees","data":serializer.data},status=status.HTTP_200_OK)
 
 @api_view(["POST"])
 def addEmployee(request):
@@ -139,7 +178,7 @@ def deleteEmployee(request):
     return Response({"status":404,"message":"employee not found"},status=status.HTTP_404_NOT_FOUND)
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 def searchEmployee(request):
   results = []
   resultsKeys=[]
@@ -199,11 +238,32 @@ def searchEmployee(request):
         resultsKeys.append(employee.pk)
         results.append(employee)
     
-  if len(results)>0:
-    serializer = EmployeeSerializer(results,many=True)
-    return Response({"status":200,"message":"employees","data":serializer.data},status=status.HTTP_200_OK)
-  else:
-    return Response({"status":204,"message":"Employee not found","data":{}},status=status.HTTP_204_NO_CONTENT)   
+  
+  serializer = EmployeeSerializer(results,many=True)
+  return Response({"status":200,"message":"employees","data":serializer.data},status=status.HTTP_200_OK)
+
+@api_view(["POST"])
+def getCompanyEmployees(request):
+  results=[]
+  data = request.data
+  if type(data) is not dict or "id" not in data.keys():
+     return Response({"status":400,"message":"request should be json with company id","data":results},status=status.HTTP_400_BAD_REQUEST)
+  
+  companyFilters={}
+  if 'id' in data.keys():
+    companyFilters['id']=data['id']
+  companies = Company.objects.filter(**companyFilters)
+  company_ids = companies.values_list('id', flat=True)
+  employee_filters = {
+    'company_id__in': company_ids 
+  }
+  
+  if 'name' in data.keys():
+    employee_filters['name__contains']=data['name']
+  
+  employees = Employee.objects.filter(**employee_filters)
+  serializer = EmployeeSerializer(employees,many=True)
+  return Response({"status":200,"message":"employees","data":serializer.data},status=status.HTTP_200_OK)
 
 @api_view(["GET"])
 def getRoles(request):
@@ -213,10 +273,20 @@ def getRoles(request):
 
 @api_view(["POST"])
 def addRole(request):
-    serializer =RoleSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-    return Response({"status":200,"message":"role added","data":serializer.data},status=status.HTTP_200_OK)
+    data = request.data
+    if type(data) is not dict or "employee" not in data.keys() or "company" not in data["employee"].keys():
+     return Response({"status":400,"message":"bad request","data":{}},status=status.HTTP_400_BAD_REQUEST)
+    
+    employee_data = data.pop('employee')
+    company_data = employee_data.pop('company')
+    company,created = Company.objects.get_or_create(id=company_data['id'],defaults=company_data)
+    employee_data["company"]=company
+    employee,created = Employee.objects.get_or_create(name=employee_data['name'], defaults=employee_data)
+    data['employee'] = employee    
+    role = Role.objects.create(**data)
+    serializer = RoleSerializer(role)
+    return Response({"status": 200, "message": "Role added", "data": serializer.data}, status=status.HTTP_200_OK)
+    
 
 @api_view(["POST"])
 def addRoles(request):
