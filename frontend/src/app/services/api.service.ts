@@ -35,7 +35,6 @@ export class APIService {
   constructor(private http: HttpClient) { }
 
   getCompanies(): Promise<any> {
-    console.log("getCompanies")
     const url = `${this.apiUrl}getCompanies/`; 
     return this.http.get(url,this.httpOptions).toPromise();
   }
@@ -52,6 +51,7 @@ export class APIService {
 
   addCompanies(data:any):Promise<any>{
     const url = `${this.apiUrl}addCompanies/`; 
+    console.log(url);
     return this.http.post(url,data,this.httpOptions).toPromise();
   }
   
@@ -67,6 +67,7 @@ export class APIService {
 
   getRoles():Promise<any>{
     const url = `${this.apiUrl}getRoles/`;
+    console.log(url);
     return this.http.get(url,this.httpOptions).toPromise();
   }
 
