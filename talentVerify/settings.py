@@ -113,6 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
 CORS_ALLOWED_ORIGINS = [
   "http://localhost:4200",
   "http://127.0.0.1:4200",
+  "http://18.191.1.123:4200",
 ]
 CORS_ALLOWED_HEADERS = [
    'HTTP_API_KEY',

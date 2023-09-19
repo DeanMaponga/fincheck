@@ -23,7 +23,7 @@ export class APIService {
   tempRole:Role|undefined;
   employeeSearchResults:Role[]=[];
   currentTab: string = 'add-company';
-  private apiUrl = 'http://localhost:8000/';
+  private apiUrl = 'http://18.191.1.123:8000';//'http://localhost:8000/';
   apiKey = 'testKey';
   httpOptions = {
     headers: new HttpHeaders({
