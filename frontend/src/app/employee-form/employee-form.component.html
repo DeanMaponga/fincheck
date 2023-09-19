@@ -1,5 +1,5 @@
 <div class="form-container container">
-    <h2 class="header">Add Employee</h2>
+    <h2 class="header">{{title}}</h2>
     <div *ngIf="isDetails">
         <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
             <p>
@@ -17,13 +17,12 @@
             </mat-form-field>
             </p>    
             <p>
-            <mat-form-field appearance="outline">
-                <mat-hint>Company department</mat-hint>
-                <mat-label>Department</mat-label>
-                <input matInput formControlName="department" required>
-            </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-hint>Company department</mat-hint>
+                    <mat-label>Department</mat-label>
+                    <input matInput formControlName="department" required>
+                </mat-form-field>
             </p>
-
             <!-- Role Details -->
             <p>
             <mat-form-field appearance="outline">
@@ -42,20 +41,20 @@
             </mat-form-field>
             </p>
             <p>
-            <mat-form-field appearance="outline">
-                <mat-hint>YYYY-MM-DD</mat-hint>
-                <mat-label>End Date</mat-label>
-                <input matInput [matDatepicker]="endDatePicker" formControlName="end_date" readonly="true">
-                <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
-                <mat-datepicker #endDatePicker></mat-datepicker>
-            </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-hint>YYYY-MM-DD</mat-hint>
+                    <mat-label>End Date</mat-label>
+                    <input matInput [matDatepicker]="endDatePicker" formControlName="end_date" readonly="true">
+                    <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #endDatePicker></mat-datepicker>
+                </mat-form-field>
             </p>
             <p>
-            <mat-form-field appearance="outline">
-                <mat-hint>Duties performed in this role</mat-hint>
-                <mat-label>Duties</mat-label>
-                <textarea matInput formControlName="duties" required></textarea>
-            </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-hint>Duties performed in this role</mat-hint>
+                    <mat-label>Duties</mat-label>
+                    <textarea matInput formControlName="duties" required></textarea>
+                </mat-form-field>
             </p>
             <div class="button-container mat-button-spacing-medium">
                 <div class="spacer"></div>
@@ -69,7 +68,13 @@
       </div>
       <div *ngIf="isSuccess" class="success-screen">
         <mat-icon>check_circle</mat-icon>
-        <p>Company added successfully!</p>
+        <p>{{successMsg}}</p>
+        <button mat-raised-button color="primary" (click)="onOKButtonClicked()">OK</button>
+      </div>
+      <div *ngIf="isError" class="success-screen">
+        <mat-icon color="error">error</mat-icon>
+        <p>Unable to </p>
+        <p>{{errorMsg}}</p>
         <button mat-raised-button color="primary" (click)="onOKButtonClicked()">OK</button>
       </div>
   </div>

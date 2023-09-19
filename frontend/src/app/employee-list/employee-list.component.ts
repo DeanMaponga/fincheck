@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Employee } from '../models/employee.model';
+import { Role } from '../models/role.model';
 
 @Component({
   selector: 'app-employee-list',
@@ -7,5 +7,5 @@ import { Employee } from '../models/employee.model';
   styleUrls: ['./employee-list.component.scss']
 })
 export class EmployeeListComponent{
-  @Input() employees:Employee[] =[];
+  @Input() roles:Role[] =[];
 }

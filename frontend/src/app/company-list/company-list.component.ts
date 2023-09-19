@@ -43,7 +43,4 @@ export class CompanyListComponent implements OnInit {
     this.apiService.currentTab = 'add-company';
     this.router.navigate([`/add-company`]);
   }
-  addCompaniesWithCSV(){
-    this.router.navigate([`/add-company-file`]);
-  }
 }

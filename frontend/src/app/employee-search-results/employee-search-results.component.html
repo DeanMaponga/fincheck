@@ -1,0 +1,5 @@
+<div class="form-container container">
+<h2 class="header">{{title}}</h2>
+        <app-employee-list [roles]="roles"></app-employee-list>
+        <p class="no-results" *ngIf="roles.length === 0">No employees found.</p>
+</div>

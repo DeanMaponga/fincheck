@@ -1,17 +1,17 @@
-<h2 class="header">Employees of {{ company?.name }}</h2>
-<p>
+<h2 class="header">Employees of {{ company.name }}</h2>
+<div class="search-bar-container">
   <mat-form-field appearance="outline" class="example-spacer">
     <mat-label>Search</mat-label>
     <mat-hint>Enter employee name</mat-hint>
     <input matInput [(ngModel)]="searchQuery" name="searchQuery">
   </mat-form-field>
-  <button mat-raised-button color="primary" type="submit" (click)="searchEmployees()">Search</button>
-</p>
+  <button mat-raised-button color="primary" type="submit" (click)="searchRoles()">Search</button>
+</div>
 <div class="button-container mat-button-spacing-medium">
-    <div class="spacer"></div>
+  <div class="spacer"></div>
+  <button mat-raised-button color="primary" (click)="updateCompany()">Update company</button>  
+  <div class="spacer"></div>
     <button mat-raised-button color="primary" (click)="addEmployee()">Add Employee</button>
-    <div class="spacer"></div>
-    <button mat-raised-button color="primary" (click)="addEmployeesWithCSV()">Add Employees using CSV</button>
 </div>
 <br/>
 <div *ngIf="isLoading else list" class="loading-screen">
@@ -19,6 +19,6 @@
   <p>Loading...</p>
 </div>
 <ng-template #list>
-  <app-employee-list [employees]="employees"></app-employee-list>
-  <p class="no-results" *ngIf="employees.length === 0" class="not-found">No employees found.</p>
+  <app-employee-list [roles]="roles"></app-employee-list>
+  <p class="no-results" *ngIf="roles.length === 0" class="not-found">No employees found.</p>
 </ng-template>

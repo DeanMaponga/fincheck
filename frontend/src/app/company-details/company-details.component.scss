@@ -40,3 +40,14 @@ mat-form-field {
     justify-content: center;
     text-align: center;
   }
+
+  .search-bar-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .search-bar {
+    flex: 1;
+    margin-right: 10px;
+  }
+  

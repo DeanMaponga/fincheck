@@ -1,0 +1,6 @@
+name,date_of_registration,registration_number,address,contact_person,departments,number_of_employees,contact_phone,email,employee_name,employee_id,employee_department,role,start_date,end_date,duties
+company x,2023-02-02,123,12 harare Street Harare,Mr John,Technology Administration,5,0772123456,x@email.com,Mufasa,90,Stores,Manager,2013-12-09,,takes care of stores
+school c,2001-07-02,1234,12 harare Street Harare,Head Master,Technology Administration,5,0987612345,schoolc@email.com,Tafadzwa,190,Programming,Intern,2023-08-09,2024-12-31,programming
+school a,1880-07-02,34j,Mbare Street Gweru,Head Master,Education Administration,5,1234509876,schoola@email.com,Petra,1000,Education,Teacher,2000-12-09,,teaching little ones
+shop v,2011-11-02,904,CBD Harare,manager,Technology Retail,5,0987654321,shopv@email.com,Mutsa,135,Medical,technician,2004-01-02,,chemical analysis
+shop gh,2009-12-22,1267,Avondale Gweru,Peter,Technology Vegetabeles,5,1234567890,shopgh@email.com,Peter,1,Administration,Owner,2015-11-12,,started business

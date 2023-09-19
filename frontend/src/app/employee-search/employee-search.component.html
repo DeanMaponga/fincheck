@@ -1,18 +1,71 @@
-<h2 class="header">Employee List</h2>
-<p>
-  <mat-form-field appearance="outline" class="example-spacer">
-    <mat-label>Search</mat-label>
-    <mat-hint>Enter employee name</mat-hint>
-    <input matInput [(ngModel)]="searchQuery" name="searchQuery">
-  </mat-form-field>
-  <button mat-raised-button color="primary" type="submit" (click)="searchEmployees()">Search</button>
-</p>
-
-<div *ngIf="isLoading else list" class="loading-screen">
-  <mat-spinner></mat-spinner>
-  <p>Loading...</p>
+<div class="form-container container">
+  <h2 class="header">{{title}}</h2>
+  <div *ngIf="isDetails">
+    <form [formGroup]="roleForm" (ngSubmit)="onSubmit()" class="form">
+      <p>
+        <mat-form-field appearance="outline">
+            <mat-hint>Employee name</mat-hint>
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name">
+        </mat-form-field>
+        </p>
+        <p>
+        <mat-form-field appearance="outline">
+            <mat-hint>Enter company name</mat-hint>
+            <mat-label>Employer</mat-label>
+            <input matInput formControlName="employer">
+        </mat-form-field>
+        </p>    
+        <p>
+            <mat-form-field appearance="outline">
+                <mat-hint>Company department</mat-hint>
+                <mat-label>Department</mat-label>
+                <input matInput formControlName="department">
+            </mat-form-field>
+        </p>
+        <!-- Role Details -->
+        <p>
+        <mat-form-field appearance="outline">
+            <mat-hint>Employee role in company</mat-hint>
+            <mat-label>Position</mat-label>
+            <input matInput formControlName="role">
+        </mat-form-field>
+        </p>
+        <p>
+        <mat-form-field appearance="outline">
+            <mat-hint>YYYY</mat-hint>
+            <mat-label>Start Year</mat-label>
+            <input matInput [matDatepicker]="startDatePicker" formControlName="start_date">
+            <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #startDatePicker></mat-datepicker>
+        </mat-form-field>
+        </p>
+        <p>
+            <mat-form-field appearance="outline">
+                <mat-hint>YYYY</mat-hint>
+                <mat-label>End Year</mat-label>
+                <input matInput [matDatepicker]="endDatePicker" formControlName="end_date">
+                <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #endDatePicker></mat-datepicker>
+            </mat-form-field>
+        </p>
+        <div class="button-container mat-button-spacing-medium">
+            <div class="spacer"></div>
+            <button mat-raised-button color="primary" type="submit" [disabled]="isDisabledForm()">Submit</button>
+        </div>
+    </form>
+  </div>
+  <div *ngIf="isLoading" class="loading-screen">
+    <mat-spinner></mat-spinner>
+    <p>Seaching...</p>
+  </div>
+  <div *ngIf="isSuccess" class="success-screen">
+    <mat-icon>check_circle</mat-icon>
+    <p>{{successMsg}}</p>  
+  </div>
+  <div *ngIf="isError" class="success-screen">
+    <mat-icon color="error">error</mat-icon>
+    <p>{{errorMsg}}</p>
+    <button mat-raised-button color="primary" (click)="onOKButtonClicked()">OK</button>
+  </div>
 </div>
-<ng-template #list>
-  <app-employee-list [employees]="employees"></app-employee-list>
-  <p class="no-results" *ngIf="employees.length === 0">No employees found.</p>
-</ng-template>

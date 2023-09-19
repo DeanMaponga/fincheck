@@ -52,3 +52,4 @@ pip install djangorestframework
 #Handle CORS
 pip install django-cors-headers
 #add  'corsheaders', to INSTALLED_APPS in settings.py
+pip install djangorestframework-api-key

@@ -12,6 +12,8 @@ export class CompanyCardComponent {
   constructor(private router: Router) {}
 
   navigateToCompany() {
-    this.router.navigate(['/company', this.company?.id]);
+    if(this.company?.id!==null){
+      this.router.navigate(['/company', this.company?.id]);
+    }
   }
 }

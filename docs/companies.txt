@@ -1,6 +1,6 @@
-"name","date_of_registration","registration_number","address","contact_person","departments","number_of_employees","contact_phone","email"
-"company x","2023-02-02","123","12 harare Street, Harare","Mr John","Technology, Administration",5,"0772123456","x@email.com"
-"school c","2001-07-02","1234","12 harare Street, Harare","Head Master","Technology, Administration",5,"0987612345","schoolc@email.com"
-"school a","1880-07-02","34j","Mbare Street, Gweru","Head Master","Education, Administration",5,"1234509876","schoola@email.com"
-"shop v","2011-11-02","904","CBD, Harare","manager","Technology, Retail",5,"0987654321","shopv@email.com"
-"shop gh","2009-12-22","1267","Avondale, Gweru","Peter","Technology, Vegetabeles",5,"1234567890","shopgh@email.com"
+name,date_of_registration,registration_number,address,contact_person,departments,number_of_employees,contact_phone,email
+company x,2023-02-02,123,12 harare Street Harare,Mr John,Technology Administration,5,0772123456,x@email.com
+school c,2001-07-02,1234,12 harare Street Harare,Head Master,Technology Administration,5,0987612345,schoolc@email.com
+school a,1880-07-02,34j,Mbare Street Gweru,Head Master,Education Administration,5,1234509876,schoola@email.com
+shop v,2011-11-02,904,CBD Harare,manager,Technology Retail,5,0987654321,shopv@email.com
+shop gh,2009-12-22,1267,Avondale Gweru,Peter,Technology Vegetabeles,5,1234567890,shopgh@email.com

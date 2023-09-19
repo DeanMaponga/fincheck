@@ -1,10 +1,14 @@
-<mat-card>
-    <mat-card-header>
-      <mat-card-title>{{ employee?.name }}</mat-card-title>
-      <mat-card-subtitle>Employee ID: {{ employee?.employee_id }}</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <p>Company: {{ employee?.company?.name }}</p>
-      <p>Department: {{ employee?.department }}</p>
-    </mat-card-content>
-  </mat-card>
+<mat-card (click)="navigateToEmployee()">
+  <mat-card-header>
+    <mat-card-title>{{ role?.employee?.name }}</mat-card-title>
+    <mat-card-subtitle>Employee ID: {{ role?.employee?.employee_id }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <p>Company: {{ role?.employee?.company?.name }}</p>
+    <p>Department: {{ role?.employee?.department }}</p>
+    <p>Role: {{ role?.role }}</p>
+    <p>Start Date: {{ role?.start_date }}</p>
+    <p>End Date: {{ role?.end_date }}</p>
+    <p>Duties: {{ role?.duties }}</p>
+  </mat-card-content>
+</mat-card>

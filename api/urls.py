@@ -27,4 +27,6 @@ urlpatterns=[
     path('updateRole/',views.updateRole),
     path('bulkUpdateRoles/',views.bulkUpdateRoles),
     path('deleteRole/',views.deleteRole),
+    path('getCompanyRoles/',views.getCompanyRoles),
+    path('searchRoles/',views.searchRoles),
 ]

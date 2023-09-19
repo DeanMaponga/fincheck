@@ -1,4 +1,8 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, Inject } from '@angular/core';
+import { MatDialog} from '@angular/material/dialog';
+import { FileDialogComponent } from '../file-dialog/file-dialog.component';
+import { Company } from '../models/company.model';
+import { APIService } from '../services/api.service';
 
 @Component({
   selector: 'app-company-file',
@@ -6,57 +10,105 @@ import { Component, ViewChild } from '@angular/core';
   styleUrls: ['./company-file.component.scss']
 })
 export class CompanyFileComponent {
-  @ViewChild('fileInput') fileInput: any;
-  openFile() {
-    this.fileInput.nativeElement.click();
-  }
-  handleFileInput(files: FileList) {
-    console.log(files);
-    /*const file = files?.item(0);
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const fileContent = event.target?.result as string;
-      const jsonData = this.convertCsvToJson(fileContent);
-      console.log(jsonData);
-    };
-    reader.readAsText(file);*/
-  }
+  isLoading = false;
+  isDetails = true;
+  isSuccess = false;
+  isError = false;
+  errorMsg = "";
+  companies:Company[] =[];
+  constructor(public dialog: MatDialog,private apiService:APIService) { }
+  openDialog(): void {
+    const dialogRef = this.dialog.open(FileDialogComponent, {
+      width: '400px',
+      data: {}
+    });
 
-  convertCsvToJson(csvText: string) {
-    // Parse the CSV text and convert it to JSON
-    const lines = csvText.split('\n');
-    const headers = lines[0].split(',');
-    const jsonData = [];
-    for (let i = 1; i < lines.length; i++) {
-      const values = lines[i].split(',');
-      const entry:any = {};
-      for (let j = 0; j < headers.length; j++) {
-        entry[headers[j]] = values[j];
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        switch(result["fileType"]){
+          case "csv":{
+            this.companies = this.processCSV(result["data"]);
+            break;
+          }
+          case "txt":{
+            this.companies = this.processCSV(result["data"]);
+            break;
+          }
+          case "excel":{
+            this.companies = this.processExcel(result);
+            break;
+          }
+        }
       }
-      jsonData.push(entry);
+    });
+  }
+
+  processCSV(csvData: string): Company[] {
+    const lines = csvData.split('\n');
+    const result: Company[] = [];
+    const headers = lines[0].split(',');
+    for (let i = 1; i < lines.length; i++) {
+      const currentLine = lines[i].split(',');
+      const company: Company = {
+        id: null,
+        name: currentLine[0],
+        date_of_registration: currentLine[1],
+        registration_number: currentLine[2],
+        address: currentLine[3],
+        contact_person: currentLine[4],
+        departments: currentLine[5],
+        number_of_employees: parseInt(currentLine[6]),
+        contact_phone: currentLine[7],
+        email: currentLine[8]
+      };
+      result.push(company);
     }
-    return jsonData;
+    return result;
   }
 
-  onFileSelected(event: any) {
-    const file: File = event.target.files[0];
-    const reader: FileReader = new FileReader();
-
-    reader.onload = (e: any) => {
-      const fileContent: string = e.target.result;
-      const jsonData = this.parseFileContent(fileContent);
-      console.log(jsonData);
-    };
-
-    reader.readAsText(file);
+  processExcel(data:any){
+    return [];
   }
 
-  parseFileContent(content: string) {
-    const jsonData = {}
-    return jsonData;
+  cantSubmit(){
+    return this.companies.length===0 || this.isLoading;
   }
 
   onSubmit(){
+    this.isLoading = false;
+    this.isDetails = false;
+    this.isSuccess = false;
+    this.isError = false;
+    
+    this.apiService.addCompanies(this.companies)
+      .then((results)=>{
+        this.isDetails = false;
+        this.isLoading = false;
+        this.isSuccess =  true;
+        this.isError =false;
+        console.log(results);
+      })
+      .catch((err)=>{console.log(err);
+        this.isDetails = false;
+        this.isLoading = false;
+        this.isSuccess =  false;
+        this.isError = true;
+        this.errorMsg ="An error occured, make sure phone has 10 characters, email is valid and number of employees is integer";
+        if(Object.keys(err["error"]).includes("details")){
+          this.errorMsg = err["error"]["details"];
+          console.log(this.errorMsg)
+        }
+      });
+  }
 
+  onOKButtonClicked() {
+    if(this.isSuccess){
+      this.companies = [];
+    }
+
+    this.isDetails = true;
+    this.isError = false;
+    this.isLoading = false;
+    this.isSuccess = false;
   }
 }

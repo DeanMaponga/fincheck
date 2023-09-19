@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from corsheaders.defaults import default_headers
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_cryptography',
     'rest_framework',
+    'rest_framework_api_key',
     'corsheaders',
     'company'
 ]
@@ -52,7 +54,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    #OWn middleware
+    #'talentVerify.api_key_middleware.APIKeyMiddleware',
 ]
+
 
 ROOT_URLCONF = 'talentVerify.urls'
 
@@ -108,7 +114,10 @@ CORS_ALLOWED_ORIGINS = [
   "http://localhost:4200",
   "http://127.0.0.1:4200",
 ]
-
+CORS_ALLOWED_HEADERS = [
+   'HTTP_API_KEY',
+]
+CORS_ALLOW_HEADERS = list(default_headers) + CORS_ALLOWED_HEADERS
 CORS_ALLOW_METHODS = (
     "DELETE",
     "GET",
@@ -118,6 +127,12 @@ CORS_ALLOW_METHODS = (
     "PUT",
 )
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        #'rest_framework.authentication.TokenAuthentication',
+        'talentVerify.api_fixed_key.FixedTokenAuthentication'
+    ],
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/

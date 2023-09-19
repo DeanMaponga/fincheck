@@ -9,19 +9,17 @@
   </mat-toolbar>
 </p>-->
 <h2 class="header">Company List</h2>
-<p>
+<div class="search-bar-container">
   <mat-form-field appearance="outline" class="example-spacer">
     <mat-label>Search</mat-label>
     <mat-hint>Enter company name</mat-hint>
     <input matInput [(ngModel)]="searchQuery" name="searchQuery">
   </mat-form-field>
   <button mat-raised-button color="primary" type="submit" (click)="searchCompanies()">Search</button>
-</p>
+</div>
 <div class="button-container mat-button-spacing-medium">
   <div class="spacer"></div>
-  <button mat-raised-button color="primary" (click)="addCompany()">Add Company</button>
-  <div class="spacer"></div>
-  <button mat-raised-button color="primary" (click)="addCompaniesWithCSV()">Add Companies using CSV</button>
+  <button mat-raised-button color="primary" (click)="addCompany()">Add Company</button> 
 </div>
 <div *ngIf="isLoading else list" class="loading-screen">
   <mat-spinner></mat-spinner>

@@ -22,6 +22,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { ReactiveFormsModule, FormsModule} from '@angular/forms';
 import { CompanyCardComponent } from './company-card/company-card.component';
@@ -31,14 +32,26 @@ import { EmployeeSearchComponent } from './employee-search/employee-search.compo
 import { EmployeeFormComponent } from './employee-form/employee-form.component';
 import { EmployeeFileComponent } from './employee-file/employee-file.component';
 import { CompanyFileComponent } from './company-file/company-file.component';
+import { FileDialogComponent } from './file-dialog/file-dialog.component';
+import { CompanyUpdateComponent } from './company-update/company-update.component';
+import { EmployeeDetailsComponent } from './employee-details/employee-details.component';
+import { EmployeeAllComponent } from './employee-all/employee-all.component';
+import { EmployeeSearchResultsComponent } from './employee-search-results/employee-search-results.component';
 
 const routes: Routes = [
+  { path: 'employees', component: EmployeeAllComponent },
+  { path: 'employee/:id', component: EmployeeDetailsComponent },
+  { path: 'search-employee', component: EmployeeSearchComponent },
+  { path: 'search-employee-results', component: EmployeeSearchResultsComponent },
+  { path: 'add-employee-file', component:EmployeeFileComponent},
+  
   { path: 'companies', component: CompanyListComponent },
-  { path: 'employees', component: EmployeeSearchComponent },
   { path: 'add-company', component: CompanyFormComponent },
   { path: 'add-company-file', component:CompanyFileComponent},
   { path: 'company/:id', component: CompanyDetailsComponent },
+  { path: 'company/:id/update', component: CompanyUpdateComponent },
   { path: 'company/:id/newEmployee', component: EmployeeFormComponent },
+  
   { path: '', redirectTo: '/add-company', pathMatch: 'full' }
 ];
 
@@ -54,7 +67,12 @@ const routes: Routes = [
     EmployeeSearchComponent,
     EmployeeFormComponent,
     EmployeeFileComponent,
-    CompanyFileComponent
+    CompanyFileComponent,
+    FileDialogComponent,
+    CompanyUpdateComponent,
+    EmployeeDetailsComponent,
+    EmployeeAllComponent,
+    EmployeeSearchResultsComponent
   ],
   imports: [
     BrowserModule,
@@ -68,6 +86,7 @@ const routes: Routes = [
     MatIconModule,
     MatListModule,
     MatCardModule,
+    MatDialogModule,
     MatToolbarModule,
     MatNativeDateModule,
     MatDatepickerModule,

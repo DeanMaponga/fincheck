@@ -1,0 +1,8 @@
+<h2 mat-dialog-title>Open File</h2>
+<div mat-dialog-content>
+  <input type="file" (change)="onFileSelected($event)">
+</div>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="returnData" cdkFocusInitial>OK</button>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+</div>

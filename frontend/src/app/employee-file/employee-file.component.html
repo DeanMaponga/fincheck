@@ -1,1 +1,31 @@
-<p>employee-file works!</p>
+<h2 class="header">Add companies using text, csv or excel file</h2>
+<div class="button-container mat-button-spacing-medium">
+  <div class="spacer"></div>
+  <button mat-raised-button color="primary" (click)="openDialog()">Open File</button>
+  <div class="spacer"></div>
+  <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="cantSubmit()">Submit</button>
+</div>  
+<div *ngIf="isLoading" class="loading-screen">
+  <mat-spinner></mat-spinner>
+  <p>Loading...</p>
+</div>
+<div *ngIf="isDetails">
+  <mat-list *ngIf="roles.length > 0">
+    <mat-list-item *ngFor="let role of roles">
+      <app-employee-card [role]="role"></app-employee-card>
+    </mat-list-item>
+  </mat-list>
+  <p class="no-results" *ngIf="roles.length === 0">No employees found.</p>
+</div>
+<div *ngIf="isSuccess" class="success-screen">
+  <mat-icon>check_circle</mat-icon>
+  <p>Employees added successfully!</p>
+  <button mat-raised-button color="primary" (click)="onOKButtonClicked()">OK</button>
+</div>
+<div *ngIf="isError" class="success-screen">
+  <mat-icon color="error">error</mat-icon>
+  <p>Unable to add employees</p>
+  <p>{{errorMsg}}</p>
+  <button mat-raised-button color="primary" (click)="onOKButtonClicked()">OK</button>
+</div>
+

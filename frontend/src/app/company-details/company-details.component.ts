@@ -4,6 +4,7 @@ import { APIService } from '../services/api.service';
 import { Company } from '../models/company.model';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
+import { Role } from '../models/role.model';
 
 @Component({
   selector: 'app-company-details',
@@ -13,8 +14,19 @@ import { Router } from '@angular/router';
 export class CompanyDetailsComponent implements OnInit{
   isLoading = true;
   searchQuery = '';
-  employees: Employee[]=[];
-  company:Company|undefined;
+  roles: Role[]=[];
+  company:Company|Company={
+    id: null,
+    name: "",
+    date_of_registration: "",
+    registration_number: "",
+    address: "",
+    contact_person: "",
+    departments: "",
+    number_of_employees: 0,
+    contact_phone: "",
+    email: "",
+  };
   companyId: string|undefined;
   constructor(private apiService: APIService,private route: ActivatedRoute,private router: Router) {}
   ngOnInit() {
@@ -26,13 +38,13 @@ export class CompanyDetailsComponent implements OnInit{
       .then((results) => {
         this.isLoading = false;
         this.company = results.data[0];
-        return this.apiService.getCompanyEmployees({"id":idParam});
+        return this.apiService.getCompanyRoles({"company_id":idParam});
       })
       .then((results) => {
         this.isLoading = false;
-        this.employees = results.data;
-        if(this.employees.length>0){
-          this.company = this.employees[0].company;
+        this.roles = results.data;
+        if(this.roles.length>0){
+          this.company = this.roles[0].employee.company;
         }
       })
       .catch(
@@ -43,12 +55,12 @@ export class CompanyDetailsComponent implements OnInit{
     }
   }
 
-  searchEmployees() {
+  searchRoles() {
     this.isLoading = true;
-    this.apiService.getCompanyEmployees({"name":this.searchQuery,"id":this.companyId})
+    this.apiService.getCompanyRoles({"name":this.searchQuery,"company_id":this.companyId})
     .then((results) => {
       this.isLoading = false;
-      this.employees = results.data;
+      this.roles = results.data;
     })
     .catch((error) => {
         console.error('Error fetching employees:', error);
@@ -57,8 +69,14 @@ export class CompanyDetailsComponent implements OnInit{
   }
 
   addEmployee(){
-    const companyJson = JSON.stringify(this.company);
-    this.router.navigate([`/company/${this.companyId}/newEmployee`],{ queryParams: { company: companyJson }});
+    this.apiService.tempCompany=this.company;
+    this.router.navigate([`/company/${this.companyId}/newEmployee`]);
   }
-  addEmployeesWithCSV(){}
+  
+  updateCompany(): void {
+    if (this.company?.id !== null) {
+      this.apiService.tempCompany = this.company;
+      this.router.navigate([`company/${this.company.id}/update`]);
+    }
+  }
 }

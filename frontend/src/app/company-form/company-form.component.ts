@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Company } from '../models/company.model';
+import { Company} from '../models/company.model';
 import { DatePipe } from '@angular/common';
 import { APIService } from '../services/api.service';
 
@@ -10,28 +10,47 @@ import { APIService } from '../services/api.service';
   styleUrls: ['./company-form.component.scss']
 })
 export class CompanyFormComponent implements OnInit {
+  isUpdate = false;
   isDetails = true;
   isLoading = false;
   isSuccess = false;
   isError = false;
   errorMsg ="";
+  successMsg =""
+  title="";
+  @Input() company:Company|Company={
+    id: null,
+    name: "",
+    date_of_registration: "",
+    registration_number: "",
+    address: "",
+    contact_person: "",
+    departments: "",
+    number_of_employees: 0,
+    contact_phone: "",
+    email: "",
+  };
+  
   companyForm: FormGroup = new FormGroup({});
 
   constructor(private apiService: APIService,private formBuilder: FormBuilder,private datePipe: DatePipe) { }
 
   ngOnInit() {
+    this.isUpdate = this.company.id!=null;
     this.companyForm = this.formBuilder.group({
-      id: [null],
-      name: ['', Validators.required],
-      date_of_registration: ['', Validators.required],
-      registration_number: ['', Validators.required],
-      address: ['', Validators.required],
-      contact_person: ['', Validators.required],
-      departments: ['', Validators.required],
-      number_of_employees: ['', Validators.required],
-      contact_phone: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]]
+      id: [this.company.id],
+      name: [this.company.name, Validators.required],
+      date_of_registration: [this.company.date_of_registration, Validators.required],
+      registration_number: [this.company.registration_number, Validators.required],
+      address: [this.company.address, Validators.required],
+      contact_person: [this.company.contact_person, Validators.required],
+      departments: [this.company.departments, Validators.required],
+      number_of_employees: [this.company.number_of_employees, Validators.required],
+      contact_phone: [this.company.contact_phone, Validators.required],
+      email: [this.company.email, [Validators.required, Validators.email]]
     });
+    this.title = this.isUpdate?"Update Company":"Add Company";
+    this.successMsg = this.isUpdate?"Company updated successfully!":"Company added successfully!";
   }
 
   onSubmit() {
@@ -41,23 +60,22 @@ export class CompanyFormComponent implements OnInit {
       this.isLoading = true;
       this.isError = false;
       this.isSuccess =  false;
-      const company:Company={
-        id:null,
-        name:this.companyForm.value.name,
-        date_of_registration:this.companyForm.value.date_of_registration,
-        registration_number:this.companyForm.value.registration_number,
-        address:this.companyForm.value.address,
-        contact_person:this.companyForm.value.contact_person,
-        departments:this.companyForm.value.departments,
-        number_of_employees:parseInt(this.companyForm.value.number_of_employees),
-        contact_phone:this.companyForm.value.contact_phone,
-        email:this.companyForm.value.email
-      }
+      this.company.name =this.companyForm.value.name;
+      this.company.date_of_registration = this.companyForm.value.date_of_registration;
+      this.company.registration_number=this.companyForm.value.registration_number;
+      this.company.address=this.companyForm.value.address;
+      this.company.contact_person=this.companyForm.value.contact_person;
+      this.company.departments=this.companyForm.value.departments;
+      this.company.number_of_employees=parseInt(this.companyForm.value.number_of_employees);
+      this.company.contact_phone=this.companyForm.value.contact_phone;
+      this.company.email=this.companyForm.value.email;
+      
       let tempDate = this.datePipe.transform(this.companyForm.value.date_of_registration, 'yyyy-MM-dd');
       if(tempDate!=null){
-        company.date_of_registration = tempDate;
+        this.company.date_of_registration = tempDate;
       }
-      this.apiService.addCompany(company)
+      
+      this.callAPI()
       .then((results)=>{
         this.isDetails = false;
         this.isLoading = false;
@@ -79,8 +97,12 @@ export class CompanyFormComponent implements OnInit {
     }
   }
 
+  callAPI(){
+    return  this.isUpdate?this.apiService.updateCompany(this.company):this.apiService.addCompany(this.company);    
+  }
+  
   onOKButtonClicked() {
-    if(this.isSuccess){
+    if(this.isSuccess && !this.isUpdate){
       this.companyForm.reset();
     }
 

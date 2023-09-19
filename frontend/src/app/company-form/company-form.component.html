@@ -1,5 +1,5 @@
-<div class="container">
-  <h2 class="header">Add Company</h2>
+<div class="form-container container">
+  <h2 class="header">{{title}}</h2>
   <div *ngIf="isDetails">
     <form [formGroup]="companyForm" (ngSubmit)="onSubmit()" class="form">
       <p>
@@ -91,7 +91,7 @@
   </div>
   <div *ngIf="isSuccess" class="success-screen">
     <mat-icon>check_circle</mat-icon>
-    <p>Company added successfully!</p>
+    <p>{{successMsg}}</p>
     <button mat-raised-button color="primary" (click)="onOKButtonClicked()">OK</button>
   </div>
   <div *ngIf="isError" class="success-screen">
