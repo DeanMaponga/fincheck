@@ -53,3 +53,13 @@ pip install djangorestframework
 pip install django-cors-headers
 #add  'corsheaders', to INSTALLED_APPS in settings.py
 pip install djangorestframework-api-key
+
+#Cloud compute debugging
+python3 manage.py runserver 0.0.0.0:8000
+ng serve --host 0.0.0.0
+
+#AWS cloud hosting
+sudo apt install -y nginx
+sudo nano /etc/nginx/sites-available/default
+
+ng build --configuration=production
