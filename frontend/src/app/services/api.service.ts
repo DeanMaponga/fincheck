@@ -35,6 +35,7 @@ export class APIService {
   constructor(private http: HttpClient) { }
 
   getCompanies(): Promise<any> {
+    console.log("getCompanies")
     const url = `${this.apiUrl}getCompanies/`; 
     return this.http.get(url,this.httpOptions).toPromise();
   }

@@ -59,7 +59,9 @@ python3 manage.py runserver 0.0.0.0:8000
 ng serve --host 0.0.0.0
 
 #AWS cloud hosting
+ng build --configuration=production
 sudo apt install -y nginx
 sudo nano /etc/nginx/sites-available/default
-
-ng build --configuration=production
+sudo service nginx start
+sudo nginx -t
+sudo systemctl restart nginx
