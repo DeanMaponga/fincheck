@@ -167,8 +167,8 @@ LOGGING = {
         'level': 'DEBUG',
         'class': 'logging.handlers.RotatingFileHandler',#'logging.FileHandler', 
         'filename': 'logs/requests.log',
-        'backupCount': 2, # keep at most 10 log files
-        'maxBytes': 5242880, # 5*1024*1024 bytes (5MB)
+        'backupCount': 1, # keep at most 2 log files
+        'maxBytes': 1*1024*1024, # 1*1024*1024 bytes (1MB)
     },
   },
 

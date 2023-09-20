@@ -11,8 +11,8 @@ python3 manage.py createsuperuser
 #username: dean
 #password: TestPassword
 
-django-admin startapp employer
-#This creates an app called employer which we will store emplyer details
+django-admin startapp company
+#This creates an app called company which we will store emplyer details
 #register app
 #add app name to INSTALLED_ALLS list in settings.py
 

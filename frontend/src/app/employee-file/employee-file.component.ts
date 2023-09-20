@@ -5,6 +5,7 @@ import { APIService } from '../services/api.service';
 import { FileDialogComponent } from '../file-dialog/file-dialog.component';
 import { Company } from '../models/company.model';
 import { Employee } from '../models/employee.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-employee-file',
@@ -18,7 +19,7 @@ export class EmployeeFileComponent {
   isError = false;
   errorMsg = "";
   roles:Role[] =[];
-  constructor(public dialog: MatDialog,private apiService:APIService) { }
+  constructor(private router: Router,public dialog: MatDialog,private apiService:APIService) { }
   openDialog(): void {
     const dialogRef = this.dialog.open(FileDialogComponent, {
       width: '400px',
@@ -120,6 +121,7 @@ export class EmployeeFileComponent {
   onOKButtonClicked() {
     if(this.isSuccess){
       this.roles = [];
+      this.router.navigate([`/employees`]);
     }
 
     this.isDetails = true;
