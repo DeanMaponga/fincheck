@@ -48,44 +48,91 @@ export class EmployeeFileComponent {
 
   processCSV(csvData: string): Role[] {
     const lines = csvData.split('\n');
-    const result: Role[] = [];
+    const ret: Role[] = [];
     const headers = lines[0].split(',');
     for (let i = 1; i < lines.length; i++) {
       const currentLine = lines[i].split(',');
-      const company: Company = {
-        id: null,
-        name: currentLine[0],
-        date_of_registration: currentLine[1],
-        registration_number: currentLine[2],
-        address: currentLine[3],
-        contact_person: currentLine[4],
-        departments: currentLine[5],
-        number_of_employees: parseInt(currentLine[6]),
-        contact_phone: currentLine[7],
-        email: currentLine[8]
-      };
-      const newEmployee:Employee={
-        id:null,
-        name:currentLine[9],
-        employee_id:currentLine[10],
-        department:currentLine[11],
-        company:company
-      };
-      const newRole:Role={
-        id:null,
-        role:currentLine[12],
-        start_date:currentLine[13],
-        end_date:currentLine[14].length>0?currentLine[14]:null,
-        duties:currentLine[15],
-        employee:newEmployee
+      if(currentLine.length>=16){
+        const company: Company = {
+          id: null,
+          name: currentLine[0],
+          date_of_registration: currentLine[1],
+          registration_number: currentLine[2],
+          address: currentLine[3],
+          contact_person: currentLine[4],
+          departments: currentLine[5],
+          number_of_employees: parseInt(currentLine[6]),
+          contact_phone: currentLine[7],
+          email: currentLine[8]
+        };
+        const newEmployee:Employee={
+          id:null,
+          name:currentLine[9],
+          employee_id:currentLine[10],
+          department:currentLine[11],
+          company:company
+        };
+        
+        const newRole:Role={
+          id:null,
+          role:currentLine[12],
+          start_date:currentLine[13],
+          end_date:currentLine[14]==undefined || currentLine[14].length==0?null:currentLine[14],
+          duties:currentLine[15],
+          employee:newEmployee
+        }
+        ret.push(newRole);
       }
-      result.push(newRole);
     }
-    return result;
+    return ret;
   }
 
-  processExcel(data:any){
-    return [];
+  processExcel(result:any){
+    const ret: Role[] = [];
+    if(result["error"]!=undefined){
+      console.log(result["error"]);
+    }
+    if(result["data"]!=undefined){
+      const rows = result["data"];
+      if(rows.length>0){
+        const headers = rows[0];
+        for(let i=1;i<rows.length;i++){
+          const currentLine = rows[i];
+          if(currentLine.length>=16){
+            const company: Company = {
+              id: null,
+              name: currentLine[0],
+              date_of_registration: currentLine[1],
+              registration_number: currentLine[2],
+              address: currentLine[3],
+              contact_person: currentLine[4],
+              departments: currentLine[5],
+              number_of_employees: parseInt(currentLine[6]),
+              contact_phone: currentLine[7],
+              email: currentLine[8]
+            };
+            const newEmployee:Employee={
+              id:null,
+              name:currentLine[9],
+              employee_id:currentLine[10],
+              department:currentLine[11],
+              company:company
+            };
+            
+            const newRole:Role={
+              id:null,
+              role:currentLine[12],
+              start_date:currentLine[13],
+              end_date:currentLine[14]==undefined || currentLine[14].length==0?null:currentLine[14],
+              duties:currentLine[15],
+              employee:newEmployee
+            }
+            ret.push(newRole);
+          }
+        }
+      }
+    }
+    return ret;
   }
 
   cantSubmit(){

@@ -55,8 +55,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-    #OWn middleware
-    #'talentVerify.api_key_middleware.APIKeyMiddleware',
+    #Own middleware
+    'talentVerify.api_key_middleware.APIKeyMiddleware',
 ]
 
 
@@ -129,12 +129,14 @@ CORS_ALLOW_METHODS = (
     "PUT",
 )
 
+"""
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         #'rest_framework.authentication.TokenAuthentication',
         'talentVerify.api_fixed_key.FixedTokenAuthentication'
     ],
 }
+"""
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -167,8 +169,8 @@ LOGGING = {
         'level': 'DEBUG',
         'class': 'logging.handlers.RotatingFileHandler',#'logging.FileHandler', 
         'filename': 'logs/requests.log',
-        'backupCount': 1, # keep at most 2 log files
-        'maxBytes': 1*1024*1024, # 1*1024*1024 bytes (1MB)
+        'backupCount': 2, # keep at most 2 log files
+        'maxBytes': 5*1024*1024, # 1*1024*1024 bytes (1MB)
     },
   },
 

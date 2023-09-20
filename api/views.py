@@ -294,6 +294,7 @@ def getCompanyRoles(request):
 
 @api_view(["GET"])
 def getRoles(request):
+    authorization_header = request.headers.get('Authorization')
     roles = Role.objects.all()
     serializer = RoleSerializer(roles,many=True)
     return Response({"status":200,"message":"roles","data":serializer.data},status=status.HTTP_200_OK)

@@ -3,6 +3,7 @@ import { MatDialog} from '@angular/material/dialog';
 import { FileDialogComponent } from '../file-dialog/file-dialog.component';
 import { Company } from '../models/company.model';
 import { APIService } from '../services/api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-company-file',
@@ -16,7 +17,7 @@ export class CompanyFileComponent {
   isError = false;
   errorMsg = "";
   companies:Company[] =[];
-  constructor(public dialog: MatDialog,private apiService:APIService) { }
+  constructor(private router: Router,public dialog: MatDialog,private apiService:APIService) { }
   openDialog(): void {
     const dialogRef = this.dialog.open(FileDialogComponent, {
       width: '400px',
@@ -66,8 +67,36 @@ export class CompanyFileComponent {
     return result;
   }
 
-  processExcel(data:any){
-    return [];
+  processExcel(result:any){
+    const ret: Company[] = [];
+    if(result["error"]!=undefined){
+      console.log(result["error"]);
+    }
+    if(result["data"]!=undefined){
+      const rows = result["data"];
+      if(rows.length>0){
+        const headers = rows[0];
+        for(let i=1;i<rows.length;i++){
+          const currentLine = rows[i];
+          if(currentLine.length>=9){
+            const company: Company = {
+              id: null,
+              name: currentLine[0],
+              date_of_registration: currentLine[1],
+              registration_number: currentLine[2],
+              address: currentLine[3],
+              contact_person: currentLine[4],
+              departments: currentLine[5],
+              number_of_employees: parseInt(currentLine[6]),
+              contact_phone: currentLine[7],
+              email: currentLine[8]
+            };
+            ret.push(company);
+          }
+        }
+      }
+    }
+    return ret;
   }
 
   cantSubmit(){
@@ -104,6 +133,7 @@ export class CompanyFileComponent {
   onOKButtonClicked() {
     if(this.isSuccess){
       this.companies = [];
+      this.router.navigate([`/companies`]);
     }
 
     this.isDetails = true;

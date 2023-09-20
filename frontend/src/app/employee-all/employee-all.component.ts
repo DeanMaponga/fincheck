@@ -17,7 +17,7 @@ export class EmployeeAllComponent implements OnInit{
     this.apiService.getRoles()
     .then((results) => {
       this.isLoading = false;
-      this.roles = results.data;
+      this.roles = results.data.reverse();
     })
     .catch((error) => {
         console.error('Error fetching roles:', error);

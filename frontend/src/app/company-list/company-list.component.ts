@@ -18,7 +18,7 @@ export class CompanyListComponent implements OnInit {
     this.apiService.getCompanies()
     .then((results) => {
       this.isLoading = false;
-      this.companies = results.data;
+      this.companies = results.data.reverse();
     })
     .catch((error) => {
         console.error('Error fetching companies:', error);

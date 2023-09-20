@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import * as XLSX from 'xlsx';
+import readXlsxFile from 'read-excel-file';
 
 @Component({
   selector: 'app-file-dialog',
@@ -22,26 +22,31 @@ export class FileDialogComponent {
 
   onFileSelected(event: any): void {
     const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      this.fileData = reader.result as string;
-      if(file.name.includes(".csv")){
+    if(file.name.includes(".csv")){
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.fileData = reader.result as string;
         this.returnData={"fileType":"csv","filename":file.name,"data":this.fileData};
-      }
-      else if(file.name.includes(".txt")){
+      };
+      reader.readAsText(file);    
+    }
+    else if(file.name.includes(".txt")){
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.fileData = reader.result as string;
         this.returnData={"fileType":"txt","filename":file.name,"data":this.fileData};
-      }
-      else if(file.name.includes(".xlsx")){
-        const data = new Uint8Array(e.target?.result as ArrayBuffer);
-        const workbook = XLSX.read(data, { type: 'array' });
-        const worksheet: XLSX.WorkSheet = workbook.Sheets[workbook.SheetNames[0]];
-        console.log(XLSX.utils.sheet_to_json(worksheet, { header: 1,range:1 }))
-        const csvData:string = XLSX.utils.sheet_to_csv(worksheet);
-        console.log(csvData);
-        this.returnData={"fileType":"excel","filename":file.name};
-      }
-    };
-    reader.readAsText(file);
-  
+      };
+      reader.readAsText(file);
+    }
+    else if(file.name.includes(".xlsx")){
+      readXlsxFile(file)
+      .then((rows) => {
+        this.returnData={"fileType":"excel","filename":file.name,"data":rows};
+      })
+      .catch((err)=>{
+        console.log(err);
+        this.returnData={"fileType":"excel","filename":file.name,"error":err};
+      });
+    }
   }
 }
