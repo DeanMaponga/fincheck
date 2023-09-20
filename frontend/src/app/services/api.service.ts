@@ -67,7 +67,6 @@ export class APIService {
 
   getRoles():Promise<any>{
     const url = `${this.apiUrl}getRoles/`;
-    console.log(url);
     return this.http.get(url,this.httpOptions).toPromise();
   }
 
@@ -97,7 +96,7 @@ export class APIService {
   }
   updateRole(data:any):Promise<any>{
     const url = `${this.apiUrl}updateRole/`; 
-    return this.http.post(url,data,this.httpOptions).toPromise();
+    return this.http.patch(url,data,this.httpOptions).toPromise();
   }
 
   searchRoles(data:any):Promise<any>{
