@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Company} from '../models/company.model';
 import { DatePipe } from '@angular/common';
 import { APIService } from '../services/api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-company-form',
@@ -33,7 +34,7 @@ export class CompanyFormComponent implements OnInit {
   
   companyForm: FormGroup = new FormGroup({});
 
-  constructor(private apiService: APIService,private formBuilder: FormBuilder,private datePipe: DatePipe) { }
+  constructor(private router: Router,private apiService: APIService,private formBuilder: FormBuilder,private datePipe: DatePipe) { }
 
   ngOnInit() {
     this.isUpdate = this.company.id!=null;
@@ -104,6 +105,7 @@ export class CompanyFormComponent implements OnInit {
   onOKButtonClicked() {
     if(this.isSuccess && !this.isUpdate){
       this.companyForm.reset();
+      this.router.navigate([`/companies`]);
     }
 
     this.isDetails = true;
