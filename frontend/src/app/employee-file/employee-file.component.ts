@@ -74,7 +74,7 @@ export class EmployeeFileComponent {
         id:null,
         role:currentLine[12],
         start_date:currentLine[13],
-        end_date:currentLine[14],
+        end_date:currentLine[14].length>0?currentLine[14]:null,
         duties:currentLine[15],
         employee:newEmployee
       }

@@ -10,7 +10,7 @@
     <button mat-raised-button color="primary" [ngClass]="{'selected': currentPage() === 'employees'}" (click)="changePage('employees')">View Employees</button>
     <button mat-raised-button color="primary" [ngClass]="{'selected': currentPage() === 'search-employee'}" (click)="changePage('search-employee')">Search Employees</button>
     <button mat-raised-button color="primary" [ngClass]="{'selected': currentPage() === 'add-employee-file'}" (click)="changePage('add-employee-file')">Add Employees File</button>
-    <!--<button mat-raised-button color="red" [ngClass]="{'selected': currentPage() === 'employees'}" (click)="testAPI()">Test API</button>-->
+    <!--<button mat-raised-button (click)="testAPI()">Test API</button>-->
   </mat-sidenav>
   <mat-sidenav-content class="sidenav-content">
     <router-outlet></router-outlet>

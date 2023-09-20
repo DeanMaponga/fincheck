@@ -317,11 +317,16 @@ def addRole(request):
 
 @api_view(["POST"])
 def addRoles(request):
+    data = request.data
     serializer = RoleSerializer(data=request.data,many=True)
-    if serializer.is_valid():
+    try:
+      if serializer.is_valid(raise_exception=True):
         serializer.save()
-    return Response({"status":200,"message":"roles added","data":serializer.data},status=status.HTTP_200_OK)
-
+        return Response({"status":200,"message":"roles added","data":serializer.data},status=status.HTTP_200_OK)
+    except Exception as error:
+      print(error)
+      return Response({"status":400,"message":"Bad request","data":error},status=status.HTTP_400_BAD_REQUEST)
+  
 @api_view(['PATCH']) 
 def updateRole(request):
   data = request.data
@@ -332,12 +337,14 @@ def updateRole(request):
   try:
     role = Role.objects.get(pk=data['id'])
     serializer = RoleSerializer(role,data=data,partial=True)
-    if serializer.is_valid():
+    if serializer.is_valid(raise_exception=True):
       serializer.save()
       saved.append(serializer.data)
     return Response({"status":200,"message":"roles added","data":saved},status=status.HTTP_200_OK if len(saved)>0 else status.HTTP_400_BAD_REQUEST)
-  except:
-     return Response({"status":400,"message":"Bad request","data":saved},status=status.HTTP_400_BAD_REQUEST)
+  except Exception as error:
+     print(error)
+     return Response({"status":400,"message":"Bad request","data":error},status=status.HTTP_400_BAD_REQUEST)
+  
   
 @api_view(['PATCH'])
 def bulkUpdateRoles(request):
@@ -375,26 +382,31 @@ def searchRoles(request):
   if not isinstance(data, dict):
     return Response({"status": 400, "message": "Request should be JSON"}, status=status.HTTP_400_BAD_REQUEST)
 
-  role_filters={}
-  if "name" in data:
-    role_filters["employee__name__contains"]=data["name"]
-  
-  if "start_date" in data:
-    role_filters["start_date__year"]=data["start_date"]
+  try:
+    role_filters={}
+    if "name" in data:
+      role_filters["employee__name__contains"]=data["name"]
+    
+    if "start_date" in data:
+      role_filters["start_date__year"]=data["start_date"]
 
-  if "end_date" in data:
-    role_filters["end_date__year"]=data["end_date"]
+    if "end_date" in data:
+      role_filters["end_date__year"]=data["end_date"]
 
-  if "employer" in data:
-    role_filters["employee__company__name__contains"]=data["employer"]
-  
-  if "department" in data:
-    role_filters["employee__department__contains"]=data["department"]
+    if "employer" in data:
+      role_filters["employee__company__name__contains"]=data["employer"]
+    
+    if "department" in data:
+      role_filters["employee__department__contains"]=data["department"]
 
-  if "role" in data:
-    role_filters["role__contains"]=data["role"]
+    if "role" in data:
+      role_filters["role__contains"]=data["role"]
+    
+    roles = Role.objects.filter(**role_filters)
+    serializer = RoleSerializer(roles, many=True)
+    return Response({"status": 200, "message": "Roles", "data": serializer.data}, status=200)
   
-  roles = Role.objects.filter(**role_filters)
-  print(roles)
-  serializer = RoleSerializer(roles, many=True)
-  return Response({"status": 200, "message": "Roles", "data": serializer.data}, status=200)
+  except Exception as error:
+      print(error)
+      return Response({"status":400,"message":"Bad request","data":error},status=status.HTTP_400_BAD_REQUEST)
+  

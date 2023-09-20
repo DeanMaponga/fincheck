@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { APIService } from './services/api.service';
 import { Company } from './models/company.model';
+import { Employee } from './models/employee.model';
+import { Role } from './models/role.model';
 
 @Component({
   selector: 'app-root',
@@ -48,7 +50,22 @@ export class AppComponent {
       contact_phone:testData['contact_phone'],
       email:testData['email']
     }
-    this.apiService.testAPI(company)
+    const testEmployee:Employee={
+      id:null,
+      company:company,
+      name:"Tonde",
+      department:"Testing",
+      employee_id:"1"
+    }
+    const testRole:Role={
+      id:null,
+      employee:testEmployee,
+      role:"tester",
+      start_date:"2000-03-17",
+      end_date:null,
+      duties:"testing if system works correctly"
+    }
+    this.apiService.updateRole(testRole)
     .then((results)=>{
       console.log("results")
       console.log(results);

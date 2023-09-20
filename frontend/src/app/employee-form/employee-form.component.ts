@@ -49,7 +49,6 @@ export class EmployeeFormComponent {
       this.isUpdate = this.role.id!=null;
       this.employee = this.role.employee;
       this.company = this.role.employee.company;
-      this.company = this.employee.company;
       this.employeeForm = this.formBuilder.group({
         name: [this.employee.name, Validators.required],
         employee_id: [this.employee.employee_id, Validators.required],
@@ -80,22 +79,23 @@ export class EmployeeFormComponent {
         email: "",
       };
       const employee: Employee = {
-        id:null,
+        id:this.employee!=null?this.employee.id:null,
         name: this.employeeForm.value.name,
         employee_id: this.employeeForm.value.employee_id,
         company: this.company!=undefined?this.company:newCompany,
         department: this.employeeForm.value.department,
       };
       let tempStart = this.datePipe.transform(this.employeeForm.value.start_date, 'yyyy-MM-dd');
+      let tempDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
       const role:Role={
-        id:null,
+        id:this.role!=null?this.role.id:null,
         role:this.employeeForm.value.role,
-        start_date: tempStart!=null?tempStart:"",
+        start_date: tempStart!=null?tempStart:tempDate!=null?tempDate:"",
         end_date:this.datePipe.transform(this.employeeForm.value.end_date, 'yyyy-MM-dd'),
         duties:this.employeeForm.value.duties,
         employee:employee
       };
-      
+      console.log(this.role)
       this.isError = false;
       this.isDetails =false;
       this.isSuccess = false;
@@ -124,7 +124,7 @@ export class EmployeeFormComponent {
 
   onOKButtonClicked() {
     // Reset the form
-    if(!this.isError){
+    if(!this.isError && !this.isUpdate){
       this.employeeForm.reset();
     }
     this.isError = false;

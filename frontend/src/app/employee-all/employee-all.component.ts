@@ -27,7 +27,7 @@ export class EmployeeAllComponent implements OnInit{
 
   searchRoles() {
     this.isLoading = true;
-    this.apiService.searchRole({"name":this.searchQuery})
+    this.apiService.searchRoles({"name":this.searchQuery})
     .then((results) => {
       this.isLoading = false;
       this.roles = results["data"];
